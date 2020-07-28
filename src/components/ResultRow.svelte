@@ -14,9 +14,19 @@
 
   div {
     width: 100%;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    margin-bottom: 2px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .center {
+    width: 100%;
+    text-align: center;
   }
 </style>
 
-<div class={result ? 'good' : 'bad'}>{account}</div>
+<div class={result ? 'good' : 'bad'}>
+  <div>{account}</div>
+  <div class="center">{result ? 'Ok' : 'Chyba'}</div>
+
+</div>
