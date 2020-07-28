@@ -1,19 +1,18 @@
 <script>
   import ResultRow from "./components/ResultRow.svelte";
   import checkAccounts from "./components/app/index.js";
+  import placeholder from "./constants/placeholders.js";
 
-  let placeholder = {
-    config: "100000..110000;200000..300000\r\n4*;5*\r\n012345",
-    accounts: "100001\r\n100002"
-  };
+  import { fade, fly } from "svelte/transition";
 
   let data = {
     config: "",
     accounts: ""
   };
   let resultItems = [];
+  let errorsOnly = true;
 
-  const handleSubmit = params => {
+  const handleSubmit = () => {
     resultItems = checkAccounts(data.config, data.accounts);
   };
 
@@ -22,6 +21,9 @@
     data.accounts = "";
     resultItems = [];
   };
+
+  $: filteredResult = resultItems.filter(x => !errorsOnly || !x.result);
+  $: hasResults = filteredResult.length > 0;
 </script>
 
 <style>
@@ -78,10 +80,18 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    position: relative;
   }
 
   button {
     margin: 4px;
+  }
+
+  .top {
+    position: absolute;
+    top: 100px;
+    width: 100%;
+    text-align: center;
   }
 </style>
 
@@ -103,12 +113,25 @@
       </div>
     </form>
     {#if resultItems.length}
-      <form>
+      <form transition:fly={{ x: -200 }}>
         <h2>Výsledky</h2>
+        <div class="row">
+          <label>
+            <input type="checkbox" bind:checked={errorsOnly} />
+            Zobrazit pouze chyby
+          </label>
+
+        </div>
         <div class="results">
-          {#each resultItems as item}
-            <ResultRow {...item} />
-          {/each}
+          {#if hasResults}
+            {#each filteredResult as item}
+              <div transition:fade>
+                <ResultRow {...item} />
+              </div>
+            {/each}
+          {:else}
+            <h3 class="top" transition:fade>Úspěch! Žádná chyba</h3>
+          {/if}
         </div>
       </form>
     {/if}
