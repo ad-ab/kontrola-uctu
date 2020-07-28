@@ -1,6 +1,4 @@
 #!/bin/sh
-npm run build
-
 if [ -z "$1" ]
 then
   echo "Which folder do you want to deploy to GitHub Pages?"
