@@ -22,7 +22,9 @@
     resultItems = [];
   };
 
-  $: filteredResult = resultItems.filter(x => !errorsOnly || !x.result);
+  $: filteredResult = resultItems.filter(
+    x => !errorsOnly || (!x.result || !x.secondResult)
+  );
   $: hasResults = filteredResult.length > 0;
 </script>
 
@@ -113,7 +115,7 @@
       </div>
     </form>
     {#if resultItems.length}
-      <form transition:fly={{ x: -200 }}>
+      <form transition:fly={{ x: -200, duration: 100 }}>
         <h2>Výsledky</h2>
         <div class="row">
           <label>
@@ -125,7 +127,7 @@
         <div class="results">
           {#if hasResults}
             {#each filteredResult as item}
-              <div transition:fade>
+              <div transition:fade={{ duration: 100 }}>
                 <ResultRow {...item} />
               </div>
             {/each}
