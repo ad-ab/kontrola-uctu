@@ -24,28 +24,30 @@ function isExactFn(stringItem) {
   return (x) => parseInt(x) === value && x.length === stringItem.length;
 }
 
-function isStarFn(stringItem) {
+function isStarFn(stringItem, short) {
   const chars = stringItem.split("");
-  for (let i = chars.length; i < 6; i++) chars.push("[0-9]");
+  const maxLength = short ? 4 : 6;
+  for (let i = chars.length; i < maxLength; i++) chars.push("[0-9]");
 
   const regex = chars.join("").replace(regexStar, "[0-9]");
 
   // param must match regex
-  return (x) => x.match(regex);
+
+  return (x) => x.match(`^${regex}$`) && x.length === maxLength;
 }
 
-function itemFunction(stringItem) {
+function itemFunction(stringItem, short) {
   let testFn;
   if (stringItem.includes(rangeSeparator)) testFn = isRangeFn(stringItem);
-  else if (stringItem.includes(regexStar)) testFn = isStarFn(stringItem);
+  else if (stringItem.includes(regexStar)) testFn = isStarFn(stringItem, short);
   else testFn = isExactFn(stringItem);
 
   return testFn;
 }
 
-function configLineTestFn(line) {
+function configLineTestFn(line, short = false) {
   const items = loadArray(line);
-  const testFns = items.map(itemFunction);
+  const testFns = items.map((item) => itemFunction(item, short));
 
   return (x) => {
     // go trough all tests

@@ -12,7 +12,7 @@ function main(config, data) {
   const tests = configFileLines
     .filter((x) => x)
     .map(([a, b]) => {
-      return [configLineTestFn(a), configLineTestFn(b)];
+      return [configLineTestFn(a), configLineTestFn(b, true)];
     });
 
   const results = [];
