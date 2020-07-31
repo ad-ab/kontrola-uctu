@@ -27,8 +27,7 @@ function main(config, data) {
         if (result) {
           // test second with other tests
           secondResult = tests[i][1](second);
-
-          break;
+          if (secondResult) break;
         }
       }
 
