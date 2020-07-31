@@ -22,13 +22,24 @@ function main(config, data) {
     .forEach(([value, second]) => {
       let result = false;
       let secondResult = false;
+      const tmpResults = [];
       for (let i = 0; i < tests.length; i++) {
         result = tests[i][0](value);
         if (result) {
           // test second with other tests
           secondResult = tests[i][1](second);
-          if (secondResult) break;
         }
+        if (secondResult) {
+          tmpResults = [[result, secondResult]];
+          break;
+        }
+
+        if (result) tmpResults.push([result, secondResult]);
+      }
+
+      if (tmpResults.length > 0) {
+        result = tmpResults[0][0];
+        secondResult = tmpResults[0][1];
       }
 
       results.push({
