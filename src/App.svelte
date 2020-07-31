@@ -98,7 +98,7 @@
 </style>
 
 <main>
-  <h1>Kontrola</h1>
+  <h1>Account Structure Check</h1>
   <div class="row">
     <form
       on:submit|preventDefault={handleSubmit}
