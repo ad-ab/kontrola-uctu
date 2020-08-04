@@ -6,11 +6,12 @@
   import { fade, fly } from "svelte/transition";
 
   let data = {
-    config: "1..1 1..1",
-    accounts: "1 1\n1 2\n1 3"
+    config: "1..1\n2..2\n3..3",
+    accounts: "1\n1\n2\n3\n3\n4"
   };
   let resultItems = [];
   let errorsOnly = true;
+  let filteredResult = [];
 
   const handleSubmit = () => {
     resultItems = checkAccounts(data.config, data.accounts);
@@ -23,9 +24,11 @@
   };
 
   $: filteredResult = resultItems.filter(
-    x => !errorsOnly || (!x.first.result || !x.second.result)
+    x => !errorsOnly || (!x.first.result || (!isShort && !x.second.result))
   );
+  // do we have any results?
   $: hasResults = filteredResult.length > 0;
+  // should we display 2 columns or 4 columns in the results (this is based on data)
   $: isShort =
     resultItems.filter(x => x.second.result === undefined || !x.second.account)
       .length === resultItems.length;
@@ -133,7 +136,6 @@
 
         </div>
         <div class="results">
-          {isShort}
           {#if hasResults}
             <table>
               <tr>
