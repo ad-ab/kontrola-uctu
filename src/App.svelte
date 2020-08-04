@@ -95,6 +95,11 @@
     width: 100%;
     text-align: center;
   }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
 </style>
 
 <main>
@@ -120,17 +125,23 @@
         <div class="row">
           <label>
             <input type="checkbox" bind:checked={errorsOnly} />
-            Zobrazit pouze chyby
+            Zobrazit pouze chybné záznamy
           </label>
 
         </div>
         <div class="results">
           {#if hasResults}
-            {#each filteredResult as item}
-              <div transition:fade={{ duration: 100 }}>
+            <table>
+              <tr>
+                <th>Účet 1</th>
+                <th>Kontrola 1</th>
+                <th>Účet 2</th>
+                <th>Kontrola 2</th>
+              </tr>
+              {#each filteredResult as item}
                 <ResultRow {...item} />
-              </div>
-            {/each}
+              {/each}
+            </table>
           {:else}
             <h3 class="top" transition:fade>Úspěch! Žádná chyba</h3>
           {/if}

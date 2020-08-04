@@ -5,9 +5,13 @@ const delimiter = /[ \t]+/; //"\t";
 function main(config, data) {
   const configFileLines = config
     .split(/\r?\n/)
+    .map((x) => x.trim())
     .filter((x) => x)
     .map((x) => x.split(delimiter));
-  const dataFileLines = data.split(/\r?\n/).filter((x) => x);
+  const dataFileLines = data
+    .split(/\r?\n/)
+    .map((x) => x.trim())
+    .filter((x) => x);
 
   const tests = configFileLines
     .filter((x) => x)

@@ -13,22 +13,14 @@
     background-color: #ff000020;
   }
 
-  div {
-    width: 100%;
-    margin-bottom: 2px;
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
-  }
-
-  .center {
-    width: 100%;
+  td {
     text-align: center;
   }
 </style>
 
-<div class={result && secondResult ? 'good' : 'bad'}>
-  <div>{account}</div>
-  <div class="center">{result ? 'Ok' : 'Chyba'}</div>
-  <div class="center">{secondResult ? 'Ok' : 'Chyba'}</div>
-
-</div>
+<tr>
+  <td class={result ? 'good' : 'bad'}>{account.split('\t')[0]}</td>
+  <td class={result ? 'good' : 'bad'}>{result ? 'Ok' : 'Chyba'}</td>
+  <td class={secondResult ? 'good' : 'bad'}>{account.split('\t')[1]}</td>
+  <td class={secondResult ? 'good' : 'bad'}>{secondResult ? 'Ok' : 'Chyba'}</td>
+</tr>
