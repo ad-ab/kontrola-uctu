@@ -22,7 +22,7 @@ function main(config, data) {
     .forEach(([value, second]) => {
       let result = false;
       let secondResult = false;
-      const tmpResults = [];
+      let tmpResults = [];
       for (let i = 0; i < tests.length; i++) {
         result = tests[i][0](value);
         if (result) {
