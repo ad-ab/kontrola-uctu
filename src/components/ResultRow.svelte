@@ -1,7 +1,7 @@
 <script>
-  export let account;
-  export let result;
-  export let secondResult;
+  export let first;
+  export let second;
+  export let isShort = false;
 </script>
 
 <style>
@@ -19,8 +19,14 @@
 </style>
 
 <tr>
-  <td class={result ? 'good' : 'bad'}>{account.split('\t')[0]}</td>
-  <td class={result ? 'good' : 'bad'}>{result ? 'Ok' : 'Chyba'}</td>
-  <td class={secondResult ? 'good' : 'bad'}>{account.split('\t')[1]}</td>
-  <td class={secondResult ? 'good' : 'bad'}>{secondResult ? 'Ok' : 'Chyba'}</td>
+  <td class={first.result ? 'good' : 'bad'}>{first.account}</td>
+  <td class={first.result ? 'good' : 'bad'}>{first.result ? 'Ok' : 'Chyba'}</td>
+  {#if !isShort}
+    <td class={second.result ? 'good' : 'bad'}>
+      {second.account || 'Nezadáno'}
+    </td>
+    <td class={second.result ? 'good' : 'bad'}>
+      {second.account ? (second.result ? 'Ok' : 'Chyba') : 'Chybí záznam'}
+    </td>
+  {/if}
 </tr>

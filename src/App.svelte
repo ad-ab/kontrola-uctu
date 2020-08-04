@@ -6,8 +6,8 @@
   import { fade, fly } from "svelte/transition";
 
   let data = {
-    config: "",
-    accounts: ""
+    config: "1..1 1..1",
+    accounts: "1 1\n1 2\n1 3"
   };
   let resultItems = [];
   let errorsOnly = true;
@@ -23,9 +23,12 @@
   };
 
   $: filteredResult = resultItems.filter(
-    x => !errorsOnly || (!x.result || !x.secondResult)
+    x => !errorsOnly || (!x.first.result || !x.second.result)
   );
   $: hasResults = filteredResult.length > 0;
+  $: isShort =
+    resultItems.filter(x => x.second.result === undefined || !x.second.account)
+      .length === resultItems.length;
 </script>
 
 <style>
@@ -130,16 +133,19 @@
 
         </div>
         <div class="results">
+          {isShort}
           {#if hasResults}
             <table>
               <tr>
                 <th>Účet 1</th>
                 <th>Kontrola 1</th>
-                <th>Účet 2</th>
-                <th>Kontrola 2</th>
+                {#if !isShort}
+                  <th>Účet 2</th>
+                  <th>Kontrola 2</th>
+                {/if}
               </tr>
               {#each filteredResult as item}
-                <ResultRow {...item} />
+                <ResultRow {...item} {isShort} />
               {/each}
             </table>
           {:else}

@@ -8,6 +8,7 @@ function main(config, data) {
     .map((x) => x.trim())
     .filter((x) => x)
     .map((x) => x.split(delimiter));
+
   const dataFileLines = data
     .split(/\r?\n/)
     .map((x) => x.trim())
@@ -16,7 +17,7 @@ function main(config, data) {
   const tests = configFileLines
     .filter((x) => x)
     .map(([a, b]) => {
-      return [configLineTestFn(a), configLineTestFn(b, true)];
+      return [configLineTestFn(a), b && configLineTestFn(b, true)];
     });
 
   const results = [];
@@ -25,34 +26,32 @@ function main(config, data) {
     .map((v) => v.split(delimiter))
     .forEach(([value, second]) => {
       let result = false;
-      let secondResult = false;
-      let tmpResults = [];
-      for (let i = 0; i < tests.length; i++) {
-        result = tests[i][0](value);
-        if (result) {
-          // test second with other tests
-          secondResult = tests[i][1](second);
-        }
-        if (secondResult) {
-          tmpResults = [[result, secondResult]];
-          break;
-        }
+      let secondResult = undefined;
+      let checkResult = [];
+      for (let [firstCheck, secondCheck] of tests) {
+        result = firstCheck(value);
 
-        if (result) tmpResults.push([result, secondResult]);
-      }
-
-      if (tmpResults.length > 0) {
-        result = tmpResults[0][0];
-        secondResult = tmpResults[0][1];
+        if (secondCheck && second) {
+          if (result) {
+            secondResult = secondCheck(second);
+          }
+          if (secondResult) {
+            checkResult = [[result, secondResult]];
+            break;
+          }
+          checkResult.push([result, secondResult]);
+        } else {
+          checkResult.push([result]);
+        }
       }
 
       results.push({
-        account: [value, second].join("\t"),
-        result,
-        secondResult,
+        first: { account: value, result },
+        second: { account: second, result: secondResult },
       });
     });
 
+  console.log(results);
   return results;
 }
 
