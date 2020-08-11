@@ -30,7 +30,6 @@ function main(config, data) {
       let checkResult = [];
       for (let [firstCheck, secondCheck] of tests) {
         result = firstCheck(value);
-        debugger;
         if (secondCheck && second) {
           if (result) {
             secondResult = secondCheck(second);
