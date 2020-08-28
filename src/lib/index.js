@@ -45,13 +45,24 @@ function main(config, data) {
         }
       }
 
+      const adjustedCheckResult = checkResult
+        .filter(([a, b]) => a || b)
+        .sort(([a1, b1], [a2, b2]) => {
+          if (b2 == b1) return 0;
+          if (b1) return -1;
+          if (b2) return 1;
+        });
+
+      const answer = adjustedCheckResult.length
+        ? adjustedCheckResult[0]
+        : [false, false];
+
       results.push({
-        first: { account: value, result },
-        second: { account: second, result: secondResult },
+        first: { account: value, result: answer[0] },
+        second: { account: second, result: answer[1] },
       });
     });
 
-  console.log(results);
   return results;
 }
 
